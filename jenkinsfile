@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+     environment {
+    DOCKERHUB_CREDENTIALS = credentials('github')
+  }
+    stages {
+        stage('clone') {
+            steps {
+                git (
+                    url: "https://github.com/aymanachlouj/DEV1.git",
+                    branch: "main",
+                    )
+            }
+        }
+    }
+    
+    stages {
+        stage('Image build') {
+            steps {
+                sh 'docker build -t aymanachlouj/first1:latest .' 
+            }
+        }
+    }
+    
+    stages {
+        stage('Image run') {
+            steps {
+                sh '''docker run -d --name cont1pipeline aymanachlouj/first1:latest
+                docker ps -a'''
+            }
+        }
+    }
+    
+    
+    
+    
+}
